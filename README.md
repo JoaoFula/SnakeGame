@@ -1,6 +1,6 @@
 # Snake clone
 ## Done by: 
-###[João Fula](joaofula.pythonanywhere.com) ![website logo](https://joaofula.pythonanywhere.com/static/portfolio/logo.png)
+[João Fula](joaofula.pythonanywhere.com) ![website logo](https://joaofula.pythonanywhere.com/static/portfolio/logo.png)
 
 This is a project done for **fun** with no profit intention. If you wish to contribute to the project, you may do so, even though an **email** to [hsifula@gmail.com](hsifula@gmail.com) would be nice.
 You can find more about the **author** at his [personal website](joaofula.pythonanywhere.com)
