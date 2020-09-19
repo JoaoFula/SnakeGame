@@ -8,8 +8,11 @@ You can find more about the **author** at his [personal website](joaofula.python
 ## Requirements to run the game
 To run the game in its current state it is necessary to have:
 > Python3 (Python2 should work but has not been tested)
+>
 > Pip3
+>
 > pygame
+>
 > tkinter
 
 ## How to run
