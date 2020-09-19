@@ -41,7 +41,8 @@ The are currently **2 bugs** found.
 
 ## Future plans
 * Fix the current known bugs since they are not supposed to be in the game.
-* Add a pause menu
+* Add a pause menu.
 * Add a difficulty option so the player can tone up or down the speed of the snake.
-* Add different maps (walls all around, walls spread around the center of the map)
+* Add different maps (walls all around, walls spread around the center of the map).
 * Create an AI to solve the different difficulties of the game.
+* Add a high score system that stores that value locally.
