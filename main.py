@@ -1,10 +1,16 @@
 #!usr/local/bin python3
 
 import pygame
-import math
 import random
 import tkinter as tk
 from tkinter import messagebox
+
+pygame.init()
+green = (0, 200, 0)
+red = (200, 0, 0)
+
+bright_green = (0, 255, 0)
+bright_red = (255, 0, 0)
 
 
 class cube(object):
@@ -12,8 +18,8 @@ class cube(object):
     w = 500
     def __init__(self, start, dirnx=1, dirny=0, color=(0,255,0)):
         self.pos = start
-        self.dirnx = 1
-        self.dirny = 0
+        self.dirnx = dirnx
+        self.dirny = dirny
         self.color = color
 
     def move(self, dirnx, dirny):
@@ -165,18 +171,52 @@ def message_box(subject, content):
     except:
         pass
 
+def text_objects(text, font):
+    text_surface = font.render(text, True, (0, 0, 0))
+    return text_surface, text_surface.get_rect()
 
-def main():
+def button(surface, msg, inactive_color, active_color, position, clock, action=None):
+    mouse = pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
+    if position[0] + position[2] > mouse[0] > position[0] and position[1] + position[3] > mouse[1] > position[1]:
+        pygame.draw.rect(surface, active_color, position)
+        if click[0] == 1 and action is not None:
+            if action == "play":
+                game_loop(True, surface, clock)
+            else:
+                pygame.quit()
+    else:
+        pygame.draw.rect(surface, inactive_color, position)
+
+    small_text = pygame.font.Font('freesansbold.ttf', 20)
+    text_surf, text_rect = text_objects(msg, small_text)
+    text_rect.center = (position[0] + position[2] // 2, (position[1] + position[3] // 2))
+    surface.blit(text_surf, text_rect)
+
+
+def game_intro(surface, clock):
+    global width
+    intro = True
+
+    while intro:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+        surface.fill((255, 255, 255))
+        large_text = pygame.font.Font('freesansbold.ttf', 50)
+        text_surf, text_rect = text_objects("A Snake clone", large_text)
+        text_rect.center = ((width//2), (width//2)-50)
+        surface.blit(text_surf, text_rect)
+        button(surface, 'PLAY', green, bright_green, (2 * width // 10, 2 * width // 3, 100, 50), clock, "play")
+        button(surface, 'EXIT', red, bright_red,  (8 * width // 10 - 100, 2 * width // 3, 100, 50), clock, "quit" )
+        pygame.display.update()
+        clock.tick(15)
+
+def game_loop(flag, win, clock):
     global width, rows, s, snack
-    width = 500
-    height = width
-    rows = 20
-    win = pygame.display.set_mode((width, height))
     s = snake((0, 255, 0), (10, 10))
-    snack = cube(random_snack(rows, s), color = (255, 0, 0))
+    snack = cube(random_snack(rows, s), color=(255, 0, 0))
     flag = True
-    clock = pygame.time.Clock()
-
     while flag:
         pygame.time.delay(50)
         clock.tick(10) # limit to 10 FPS
@@ -188,11 +228,39 @@ def main():
         for x in range(len(s.body)):
             if s.body[x].pos in list(map(lambda z:z.pos, s.body[x+1:])):
                 print('Score: '+ str(len(s.body)))
-                message_box('You Lost!', 'Your score was: '+ str(len(s.body))+ '\nPlay again...')
+                message_box('You Lost!', 'Your score was: '+ str(len(s.body))+ '\nPlay again?')
                 s.reset((10,10))
                 break
 
         redraw_window(win)
 
+def main():
+    global width, rows, s, snack
+    width = 500
+    height = width
+    rows = 20
+    win = pygame.display.set_mode((width, height))
+
+
+    clock = pygame.time.Clock()
+    game_intro(win, clock)
+    '''
+    while flag:
+        pygame.time.delay(50)
+        clock.tick(10) # limit to 10 FPS
+        s.move()
+        if s.body[0].pos == snack.pos:
+            s.add_cube()
+            snack = cube(random_snack(rows, s), color = (255, 0, 0))
+
+        for x in range(len(s.body)):
+            if s.body[x].pos in list(map(lambda z:z.pos, s.body[x+1:])):
+                print('Score: '+ str(len(s.body)))
+                message_box('You Lost!', 'Your score was: '+ str(len(s.body))+ '\nPlay again?')
+                s.reset((10,10))
+                break
+
+        redraw_window(win)
+'''
 if __name__ == "__main__":
     main()
