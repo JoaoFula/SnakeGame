@@ -22,12 +22,12 @@ The game is ran by typing:
 The game in the current state greets the player with a starting screen with the game **title** and two buttons. One to **play** and one to **quit** the game.
 The main menu looks like this:
 
-![Main menu](https://github.com/JoaoFula/SnakeGame/menu.png "Main menu")
+![Main menu](https://github.com/JoaoFula/SnakeGame/blob/master/menu.png "Main menu")
 
 Once the *Play* button is pressed, the game will begin. In green is represented the **snake**, moving at a fixed speed, the static **apple**, in red, and a **grid**.
 The game looks like this:
 
-![Game](https://github.com/JoaoFula/SnakeGame/game.png "Game")
+![Game](https://github.com/JoaoFula/SnakeGame/blob/master/game.png "Game")
 
 
 ## Known issues
