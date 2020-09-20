@@ -4,7 +4,15 @@ import pygame
 import random
 import tkinter as tk
 from tkinter import messagebox
+import shelve
 
+d = shelve.open('score')
+try:
+    score = d['score']
+except:
+    score = 0
+    d['score'] = score
+d.close()
 pygame.init()
 green = (0, 200, 0)
 red = (200, 0, 0)
@@ -49,8 +57,8 @@ class snake(object):
         self.color = color
         self.head = cube(pos)
         self.body.append(self.head)
-        self.dirnx = 0
-        self.dirny = 1
+        self.dirnx = 1
+        self.dirny = 0
 
     def move(self):
         for event in pygame.event.get():
@@ -81,6 +89,8 @@ class snake(object):
                         self.dirnx = 0
                         self.dirny = 1
                         self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+                "elif keys[pygame.K_ESCAPE]:"
+
 
         for i, c in enumerate(self.body):
             p = c.pos[:]
@@ -98,12 +108,17 @@ class snake(object):
                 else: c.move(c.dirnx, c.dirny)
 
     def reset(self, pos):
+        global score
+        if len(self.body) > score:
+            with shelve.open('score') as d:
+                score = len(self.body)
+                d['score'] = score
         self.body = []
         self.turns = {}
         self.head = cube(pos)
         self.body.append(self.head)
-        self.dirnx = 0
-        self.dirny = 1
+        self.dirnx = 1
+        self.dirny = 0
 
 
 
@@ -199,7 +214,7 @@ def button(surface, msg, inactive_color, active_color, position, clock, action=N
 
 
 def game_intro(surface, clock):
-    global width
+    global width, score
     intro = True
 
     while intro:
@@ -209,7 +224,12 @@ def game_intro(surface, clock):
         surface.fill((255, 255, 255))
         large_text = pygame.font.Font('freesansbold.ttf', 50)
         text_surf, text_rect = text_objects("A Snake clone", large_text)
-        text_rect.center = ((width//2), (width//2)-50)
+        text_rect.center = ((width//2), (width//3)-50)
+        surface.blit(text_surf, text_rect)
+        large_text = pygame.font.Font('freesansbold.ttf', 30)
+        string = 'Current high score is: '+ str(score)
+        text_surf, text_rect = text_objects(string, large_text)
+        text_rect.center = ((width // 2), (width // 2) - 50)
         surface.blit(text_surf, text_rect)
         button(surface, 'PLAY', green, bright_green, (2 * width // 10, 2 * width // 3, 100, 50), clock, "play")
         button(surface, 'EXIT', red, bright_red,  (8 * width // 10 - 100, 2 * width // 3, 100, 50), clock, "quit" )
