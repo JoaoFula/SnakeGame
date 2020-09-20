@@ -152,8 +152,8 @@ def draw_grid(w, rows, surface):
     for l in range(rows):
         x = x + size_between
         y = y + size_between
-        pygame.draw.line(surface, (255, 255, 255), (x,0), (x,w))
-        pygame.draw.line(surface, (255, 255, 255), (0,y), (w, y))
+        pygame.draw.line(surface, (250, 250, 250), (x,0), (x,w))
+        pygame.draw.line(surface, (250, 250, 250), (0,y), (w, y))
 
 
 def redraw_window(surface):
@@ -221,7 +221,7 @@ def game_intro(surface, clock):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-        surface.fill((255, 255, 255))
+        surface.fill((250, 250, 250))
         large_text = pygame.font.Font('freesansbold.ttf', 50)
         text_surf, text_rect = text_objects("A Snake clone", large_text)
         text_rect.center = ((width//2), (width//3)-50)
