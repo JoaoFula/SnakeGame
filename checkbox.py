@@ -4,7 +4,7 @@ pg.init()
 
 class Checkbox:
     def __init__(self, surface, x, y, color=(230, 230, 230), caption="", outline_color=(0, 0, 0),
-                 check_color=(0, 0, 0), font_size=22, font_color=(0, 0, 0), text_offset=(28, 1), checked=True, unchecked=False):
+                 check_color=(0, 0, 0), font_size=22, font_color=(0, 0, 0), text_offset=(-32, 1), checked=True, unchecked=False):
         self.surface = surface
         self.x = x
         self.y = y

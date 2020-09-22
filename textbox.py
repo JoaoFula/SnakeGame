@@ -4,14 +4,15 @@ pg.init()
 
 class Textbox:
     def __init__(self, surface, x, y, sizex=50, sizey=50, caption="",
-                 integer=True, text="", font_size=22, font_color=(0, 0, 0), text_offset=(28, 1),
-                 outline_color=(0,0,0), color_active=(255,255,255), color_inactive=(155,155,155)):
+                 integer=True, text="", font_size=22, font_color=(0, 0, 0), text_offset=(-35, 1),
+                 outline_color=(255,255,255), color_active=(25,25,25), color_inactive=(10,10,10)):
         self.surface = surface
         self.color_active = color_active
         self.color_inactive = color_inactive
         self.color = color_inactive
         self.x = x
         self.y = y
+        self.text = text
         self.sizex = sizex
         self.sizey = sizey
         self.text = text
@@ -23,11 +24,7 @@ class Textbox:
         self.checkbox_obj = pg.Rect(self.x, self.y, 12, 12)
         self.checkbox_outline = self.checkbox_obj.copy()
         self.active = False
-        if integer is True:
-            try:
-                self.value = int(self.text)
-            except TypeError:
-                print('Please write an integer')
+
 
 
     def _draw_button_text(self):
@@ -38,16 +35,16 @@ class Textbox:
         self.surface.blit(self.font_surf, self.font_pos)
 
     def render_textbox(self):
-        pg.draw.rect(self.surface, self.color, self.checkbox_obj)
+        pg.draw.rect(self.surface, (255,255,255), self.checkbox_obj)
         pg.draw.rect(self.surface, self.outline_color, self.checkbox_outline, 1)
-        font = pg.font.Font(None, 32)
+        font = pg.font.Font(None, self.font_size)
         txt_surface = font.render(self.text, True, self.color)
         width = max(200, txt_surface.get_width() + 10)
         self.checkbox_obj.w = width
         # Blit the text.
-        self.surface.blit(txt_surface, (self.checkbox_obj.x + 5, self.checkbox_obj.y + 5))
+        self.surface.blit(txt_surface, (self.checkbox_obj.x + 5, self.checkbox_obj.y ))
         # Blit the input_box rect.
-        pg.draw.rect( self.surface, self.color, self.checkbox_obj, 2)
+        #pg.draw.rect( self.surface, self.color, self.checkbox_obj, 2)
         self._draw_button_text()
 
     def update_textbox(self, event_object):
@@ -62,8 +59,8 @@ class Textbox:
             if self.active:
                 if event_object.key == pg.K_RETURN:
                     print(self.text)
-                    text = ''
+
                 elif event_object.key == pg.K_BACKSPACE:
-                    text = self.text[:-1]
+                    self.text = self.text[:-1]
                 else:
                     self.text += event_object.unicode

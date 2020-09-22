@@ -6,6 +6,7 @@ import tkinter as tk
 from tkinter import messagebox
 import shelve
 import checkbox
+import textbox
 
 d = shelve.open('score')
 try:
@@ -222,14 +223,17 @@ def game_intro(surface, clock):
     global width, score, grid
     intro = True
     chkbox = checkbox.Checkbox(surface, 2 * width // 10, 250, caption="Grid", outline_color=(0,0,200))
+    txtbox = textbox.Textbox(surface, 2 * width // 10, 275, caption="Speed")
 
     while intro:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
             chkbox.update_checkbox(event)
+            txtbox.update_textbox(event)
         surface.fill((250, 250, 250))
         chkbox.render_checkbox()
+        txtbox.render_textbox()
         grid = chkbox.is_checked()
         large_text = pygame.font.Font('freesansbold.ttf', 50)
         text_surf, text_rect = text_objects("A Snake clone", large_text)
