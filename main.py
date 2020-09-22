@@ -5,6 +5,7 @@ import random
 import tkinter as tk
 from tkinter import messagebox
 import shelve
+import checkbox
 
 d = shelve.open('score')
 try:
@@ -147,13 +148,17 @@ class snake(object):
 
 
 def draw_grid(w, rows, surface):
-    size_between = width // rows
-    x, y = 0, 0
-    for l in range(rows):
-        x = x + size_between
-        y = y + size_between
-        pygame.draw.line(surface, (250, 250, 250), (x,0), (x,w))
-        pygame.draw.line(surface, (250, 250, 250), (0,y), (w, y))
+    global grid
+    if grid:
+        size_between = width // rows
+        x, y = 0, 0
+        for l in range(rows):
+            x = x + size_between
+            y = y + size_between
+            pygame.draw.line(surface, (250, 250, 250), (x,0), (x,w))
+            pygame.draw.line(surface, (250, 250, 250), (0,y), (w, y))
+    else:
+        return
 
 
 def redraw_window(surface):
@@ -214,14 +219,18 @@ def button(surface, msg, inactive_color, active_color, position, clock, action=N
 
 
 def game_intro(surface, clock):
-    global width, score
+    global width, score, grid
     intro = True
+    chkbox = checkbox.Checkbox(surface, 2 * width // 10, 250, caption="Grid", outline_color=(0,0,200))
 
     while intro:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+            chkbox.update_checkbox(event)
         surface.fill((250, 250, 250))
+        chkbox.render_checkbox()
+        grid = chkbox.is_checked()
         large_text = pygame.font.Font('freesansbold.ttf', 50)
         text_surf, text_rect = text_objects("A Snake clone", large_text)
         text_rect.center = ((width//2), (width//3)-50)
@@ -234,13 +243,14 @@ def game_intro(surface, clock):
         button(surface, 'PLAY', green, bright_green, (2 * width // 10, 2 * width // 3, 100, 50), clock, "play")
         button(surface, 'EXIT', red, bright_red,  (8 * width // 10 - 100, 2 * width // 3, 100, 50), clock, "quit" )
         pygame.display.update()
+
         clock.tick(15)
 
 def game_loop(flag, win, clock):
     global width, rows, s, snack
     s = snake((0, 255, 0), (10, 10))
     snack = cube(random_snack(rows, s), color=(255, 0, 0))
-    flag = True
+
     while flag:
         pygame.time.delay(50)
         clock.tick(10) # limit to 10 FPS
@@ -251,7 +261,6 @@ def game_loop(flag, win, clock):
 
         for x in range(len(s.body)):
             if s.body[x].pos in list(map(lambda z:z.pos, s.body[x+1:])):
-                print('Score: '+ str(len(s.body)))
                 message_box('You Lost!', 'Your score was: '+ str(len(s.body))+ '\nPlay again?')
                 s.reset((10,10))
                 break
