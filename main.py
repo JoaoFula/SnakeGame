@@ -8,7 +8,7 @@ import shelve
 import checkbox
 import textbox
 import tuner
-import time
+
 
 d = shelve.open('score')
 try:
@@ -123,6 +123,7 @@ class snake(object):
         self.body = []
         self.turns = {}
         speed = in_speed
+        self.score = speed
         self.head = cube(pos)
         self.body.append(self.head)
         self.dirnx = 1
@@ -146,7 +147,6 @@ class snake(object):
         self.score = self.score+1*speed
         if len(self.body)%4 == 0:
             speed = min(9,speed+1)
-        print(speed)
         self.body[-1].dirnx = dx
         self.body[-1].dirny = dy
 
@@ -296,23 +296,6 @@ def main():
 
     clock = pygame.time.Clock()
     game_intro(win, clock)
-    '''
-    while flag:
-        pygame.time.delay(50)
-        clock.tick(10) # limit to 10 FPS
-        s.move()
-        if s.body[0].pos == snack.pos:
-            s.add_cube()
-            snack = cube(random_snack(rows, s), color = (255, 0, 0))
 
-        for x in range(len(s.body)):
-            if s.body[x].pos in list(map(lambda z:z.pos, s.body[x+1:])):
-                print('Score: '+ str(len(s.body)))
-                message_box('You Lost!', 'Your score was: '+ str(len(s.body))+ '\nPlay again?')
-                s.reset((10,10))
-                break
-
-        redraw_window(win)
-'''
 if __name__ == "__main__":
     main()
