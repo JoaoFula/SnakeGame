@@ -4,7 +4,7 @@ pg.init()
 
 class Tuner:
     def __init__(self, surface, x, y, sizex=50, sizey=50, init_value=5, caption="",
-                 font_size=22, font_color=(0, 0, 0), text_offset=(-37, 1),
+                 font_size=22, font_color=(0, 0, 0), text_offset=(-36, 1),
                  outline_color=(255,255,255), color_active=(25,25,25), color_inactive=(10,10,10)):
         self.surface = surface
         self.color_active = color_active

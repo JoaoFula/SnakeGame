@@ -234,7 +234,7 @@ def game_intro(surface, clock):
     intro = True
     chkbox = checkbox.Checkbox(surface, 2 * width // 10, 250, caption="Grid", outline_color=(0,0,100))
     #txtbox = textbox.Textbox(surface, 2 * width // 10, 275, caption="Speed")
-    tunr = tuner.Tuner(surface, 2 * width // 10, 275, caption="Speed")
+    tunr = tuner.Tuner(surface, 2 * width // 10 - 4, 275, caption="Speed")
 
     while intro:
         for event in pygame.event.get():
