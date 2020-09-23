@@ -36,7 +36,7 @@ The game looks like this:
 ## Known issues
 The are currently **2 bugs** found.
 
-> 1) Within the game, when the snake leaves the screen on every wall and the player presses a direction changing button, while the snake is out of sight. The snake then starts travelling outside the screen.
+> 1) Within the game, when the snake leaves the screen on any wall and the player presses a direction changing button, while the snake is out of sight. The snake then starts travelling outside the screen.
 > 2) In the initial menu, the mouse click is not constantly being read, instead, the game checks its state on every loop. Which means that if the player presses any button fast enough, the function may not read the mouse click. 
 
 ## Future plans
