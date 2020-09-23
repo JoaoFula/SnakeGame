@@ -22,7 +22,7 @@ The game is ran by typing:
 
 ## Current state of the game
 
-The game in the current state greets the player with a starting screen with the game **title** and two buttons. One to **play** and one to **quit** the game.
+The game in the current state greets the player with a starting screen with the game **title** and two buttons. One to **play** and one to **quit** the game. It is also possible to set some definitions in this menu, such as the option to hide the **grid** and the option to set the **game speed**.
 The main menu looks like this:
 
 ![Main menu](https://github.com/JoaoFula/SnakeGame/blob/master/main_menu.png "Main menu")
@@ -42,6 +42,5 @@ The are currently **2 bugs** found.
 ## Future plans
 * Fix the current known bugs since they are not supposed to be in the game.
 * Add a pause menu.
-* Add a difficulty option so the player can tone up or down the speed of the snake.
 * Add different maps (walls all around, walls spread around the center of the map).
 * Create an AI to solve the different difficulties of the game.
