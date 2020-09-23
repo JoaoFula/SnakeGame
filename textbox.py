@@ -4,7 +4,7 @@ pg.init()
 
 class Textbox:
     def __init__(self, surface, x, y, sizex=50, sizey=50, caption="",
-                 integer=True, text="", font_size=22, font_color=(0, 0, 0), text_offset=(-35, 1),
+                 text="", font_size=22, font_color=(0, 0, 0), text_offset=(-35, 1),
                  outline_color=(255,255,255), color_active=(25,25,25), color_inactive=(10,10,10)):
         self.surface = surface
         self.color_active = color_active
@@ -15,7 +15,6 @@ class Textbox:
         self.text = text
         self.sizex = sizex
         self.sizey = sizey
-        self.text = text
         self.caption = caption
         self.outline_color = outline_color
         self.font_size = font_size

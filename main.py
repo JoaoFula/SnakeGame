@@ -7,13 +7,15 @@ from tkinter import messagebox
 import shelve
 import checkbox
 import textbox
+import tuner
+import time
 
 d = shelve.open('score')
 try:
-    score = d['score']
+    high_score = d['score']
 except:
-    score = 0
-    d['score'] = score
+    high_score = 0
+    d['score'] = high_score
 d.close()
 pygame.init()
 green = (0, 200, 0)
@@ -55,12 +57,15 @@ class cube(object):
 class snake(object):
     body = []
     turns = {}
+
     def __init__(self, color, pos):
+        global speed
         self.color = color
         self.head = cube(pos)
         self.body.append(self.head)
         self.dirnx = 1
         self.dirny = 0
+        self.score = speed
 
     def move(self):
         for event in pygame.event.get():
@@ -110,13 +115,14 @@ class snake(object):
                 else: c.move(c.dirnx, c.dirny)
 
     def reset(self, pos):
-        global score
-        if len(self.body) > score:
+        global high_score, in_speed, speed
+        if self.score > high_score:
             with shelve.open('score') as d:
-                score = len(self.body)
-                d['score'] = score
+                high_score = self.score
+                d['score'] = high_score
         self.body = []
         self.turns = {}
+        speed = in_speed
         self.head = cube(pos)
         self.body.append(self.head)
         self.dirnx = 1
@@ -125,6 +131,7 @@ class snake(object):
 
 
     def add_cube(self):
+        global speed
         tail = self.body[-1]
         dx, dy = tail.dirnx, tail.dirny
 
@@ -136,7 +143,10 @@ class snake(object):
             self.body.append(cube((tail.pos[0], tail.pos[1] - 1)))
         elif dx == 0 and dy == -1:
             self.body.append(cube((tail.pos[0], tail.pos[1] + 1)))
-
+        self.score = self.score+1*speed
+        if len(self.body)%4 == 0:
+            speed = min(9,speed+1)
+        print(speed)
         self.body[-1].dirnx = dx
         self.body[-1].dirny = dy
 
@@ -220,27 +230,32 @@ def button(surface, msg, inactive_color, active_color, position, clock, action=N
 
 
 def game_intro(surface, clock):
-    global width, score, grid
+    global width, high_score, grid, speed, in_speed
     intro = True
-    chkbox = checkbox.Checkbox(surface, 2 * width // 10, 250, caption="Grid", outline_color=(0,0,200))
-    txtbox = textbox.Textbox(surface, 2 * width // 10, 275, caption="Speed")
+    chkbox = checkbox.Checkbox(surface, 2 * width // 10, 250, caption="Grid", outline_color=(0,0,100))
+    #txtbox = textbox.Textbox(surface, 2 * width // 10, 275, caption="Speed")
+    tunr = tuner.Tuner(surface, 2 * width // 10, 275, caption="Speed")
 
     while intro:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
             chkbox.update_checkbox(event)
-            txtbox.update_textbox(event)
+            tunr.update_tuner(event)
+            #txtbox.update_textbox(event)
         surface.fill((250, 250, 250))
         chkbox.render_checkbox()
-        txtbox.render_textbox()
+        tunr.render_tuner()
+        speed = tunr.value
+        in_speed = speed
+        #txtbox.render_textbox()
         grid = chkbox.is_checked()
         large_text = pygame.font.Font('freesansbold.ttf', 50)
         text_surf, text_rect = text_objects("A Snake clone", large_text)
         text_rect.center = ((width//2), (width//3)-50)
         surface.blit(text_surf, text_rect)
         large_text = pygame.font.Font('freesansbold.ttf', 30)
-        string = 'Current high score is: '+ str(score)
+        string = 'Current high score is: '+ str(high_score)
         text_surf, text_rect = text_objects(string, large_text)
         text_rect.center = ((width // 2), (width // 2) - 50)
         surface.blit(text_surf, text_rect)
@@ -251,13 +266,13 @@ def game_intro(surface, clock):
         clock.tick(15)
 
 def game_loop(flag, win, clock):
-    global width, rows, s, snack
+    global width, rows, s, snack, speed
     s = snake((0, 255, 0), (10, 10))
     snack = cube(random_snack(rows, s), color=(255, 0, 0))
 
     while flag:
         pygame.time.delay(50)
-        clock.tick(10) # limit to 10 FPS
+        clock.tick(speed*2+2) # limit to 10 FPS
         s.move()
         if s.body[0].pos == snack.pos:
             s.add_cube()
@@ -265,7 +280,7 @@ def game_loop(flag, win, clock):
 
         for x in range(len(s.body)):
             if s.body[x].pos in list(map(lambda z:z.pos, s.body[x+1:])):
-                message_box('You Lost!', 'Your score was: '+ str(len(s.body))+ '\nPlay again?')
+                message_box('You Lost!', 'Your score was: '+ str(s.score)+ '\nPlay again?')
                 s.reset((10,10))
                 break
 
