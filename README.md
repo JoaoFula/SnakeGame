@@ -44,3 +44,9 @@ The are currently **2 bugs** found.
 * Add a pause menu.
 * Add different maps (walls all around, walls spread around the center of the map).
 * Create an AI to solve the different difficulties of the game.
+
+## Copyrights
+
+**music**: forgottenland by airtone (c) copyright 2020 Licensed under a Creative Commons Attribution Noncommercial  (3.0) license. http://dig.ccmixter.org/files/airtone/61959 
+
+**Sound effects** by [eugeneloza](https://github.com/eugeneloza/)

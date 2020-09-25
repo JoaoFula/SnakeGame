@@ -9,7 +9,7 @@ import checkbox
 import textbox
 import tuner
 
-
+## Set variables used throughout the game
 d = shelve.open('score')
 try:
     high_score = d['score']
@@ -23,6 +23,16 @@ red = (200, 0, 0)
 
 bright_green = (0, 255, 0)
 bright_red = (255, 0, 0)
+
+## Load sounds
+eat_sound = pygame.mixer.Sound('EatSound_CC0_by_EugeneLoza.ogg')
+die_sound = pygame.mixer.Sound('DieSound_CC0_by_EugeneLoza.ogg')
+music = pygame.mixer.music.load('airtone_-_forgottenland.mp3')
+
+## Set volumes
+pygame.mixer.Sound.set_volume(eat_sound, 0.3)
+pygame.mixer.Sound.set_volume(die_sound, 0.3)
+pygame.mixer.music.set_volume(0.3)
 
 
 class cube(object):
@@ -128,11 +138,12 @@ class snake(object):
         self.body.append(self.head)
         self.dirnx = 1
         self.dirny = 0
-
-
+        pygame.mixer.fadeout(1000)
+        pygame.mixer.music.unpause()
 
     def add_cube(self):
         global speed
+        pygame.mixer.Sound.play(eat_sound)
         tail = self.body[-1]
         dx, dy = tail.dirnx, tail.dirny
 
@@ -195,6 +206,8 @@ def random_snack(rows, snake):
 
 
 def message_box(subject, content):
+    pygame.mixer.music.pause()
+    pygame.mixer.Sound.play(die_sound)
     root = tk.Tk()
     root.resizable(0, 0)
     root.geometry('250x100')
@@ -269,7 +282,7 @@ def game_loop(flag, win, clock):
     global width, rows, s, snack, speed
     s = snake((0, 255, 0), (10, 10))
     snack = cube(random_snack(rows, s), color=(255, 0, 0))
-
+    pygame.mixer.music.play(loops=-1)
     while flag:
         pygame.time.delay(50)
         clock.tick(speed*2+2) # limit to 10 FPS
